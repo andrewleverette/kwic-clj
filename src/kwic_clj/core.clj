@@ -1,7 +1,7 @@
 (ns kwic-clj.core
-  (:gen-class))
+  (:gen-class)
+  (:require [kwic-clj.mod1 :as mod1]))
 
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+  []
+  (mod1/kwic))

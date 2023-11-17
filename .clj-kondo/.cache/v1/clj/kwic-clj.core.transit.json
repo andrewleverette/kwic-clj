@@ -1,1 +1,1 @@
-["^ ","~$-main",["^ ","~:row",4,"~:col",1,"~:varargs-min-arity",0,"~:name","^0","~:ns","~$kwic-clj.core","~:top-ns","^6","~:type","~:fn"],"~:filename","/Users/andrewleverette/Workspace/kwic-clj/src/kwic_clj/core.clj"]
+["^ ","~$-main",["^ ","~:row",5,"~:col",1,"~:fixed-arities",["~#set",[0]],"~:name","^0","~:ns","~$kwic-clj.core","~:top-ns","^7","~:type","~:fn"],"~:filename","/Users/andrewleverette/Workspace/kwic-clj/src/kwic_clj/core.clj"]
