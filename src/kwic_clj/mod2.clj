@@ -3,13 +3,31 @@
             [clojure.java.io :as io]))
 
 (defprotocol LineStorage
-  (words [this idx])
-  (line-count [this]))
+  (words [this idx] "Returns a list of words for a given line index")
+  (line-count [this] "Returns the number of lines in the line storage"))
 
 (defrecord LineStore [lines]
   LineStorage
   (words [this idx] (str/split (get-in this [:lines idx]) #"\s+"))
   (line-count [this] (count (get this :lines))))
+
+(defprotocol Shifter
+  (shifts [this] "Returns a list of shifts")
+  (sort-shifts [this f] "Returns a list of sorted shifts")
+  (from-line-store [this line-store] "Converts lines from line store into circulr shifts"))
+
+(defrecord CircularShift [shifts]
+  Shifter
+  (shifts [this] (get this :shifts))
+  (sort-shifts [this f] (assoc this :shifts (sort-by f (get this :shifts))))
+  (from-line-store [this line-store]
+    (loop [line-idx 0
+           circular-shifts []]
+      (if (= line-idx (line-count line-store))
+        (assoc this :shifts circular-shifts)
+        (let [words (words line-store line-idx)
+              line-shifts (map #(str/join " " (concat (drop % words) (take % words))) (range (count words)))]
+          (recur (inc line-idx) (concat circular-shifts line-shifts)))))))
 
 (defn input
   "Read input from stdin.
@@ -27,23 +45,17 @@
   A circulr shift is a string that has been shifted by 
   some number of words"
   [line-store]
-  (loop [line-idx 0
-         shifts []]
-    (if (= line-idx (line-count line-store))
-      shifts
-      (let [words (words line-store line-idx)
-            line-shifts (map #(str/join " " (concat (drop % words) (take % words))) (range (count words)))]
-        (recur (inc line-idx) (concat shifts line-shifts))))))
+  (from-line-store (->CircularShift []) line-store))
 
 (defn alphabetize
   "Sorts circular shifts in alphabetical order."
-  [shifts]
-  (sort-by str/lower-case shifts))
+  [circular-shift]
+  (sort-shifts circular-shift str/lower-case))
 
 (defn output
   "Prints each line in the sorted order"
-  [sorted-shifts]
-  (doseq [line sorted-shifts]
+  [sorted-shift]
+  (doseq [line (shifts sorted-shift)]
     (println line)))
 
 (defn kwic []

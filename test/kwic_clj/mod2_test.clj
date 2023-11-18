@@ -60,34 +60,34 @@ This is the first line.
          (with-in-str sample-input (mod2/input)))))
 
 (deftest empty-input
-  (is (empty? (mod2/circular-shifts (mod2/->LineStore [])))))
+  (is (= (mod2/->CircularShift []) (mod2/circular-shifts (mod2/->LineStore [])))))
 
 (deftest one-line-circular-shifts
-  (is (= ["one two three" "two three one" "three one two"]
+  (is (= (mod2/->CircularShift ["one two three" "two three one" "three one two"])
          (mod2/circular-shifts one-line-input))))
 
 (deftest sample-circular-shifts
-  (is (= sample-shifts
+  (is (= (mod2/->CircularShift sample-shifts)
          (mod2/circular-shifts parsed-sample-input))))
 
 (deftest alphabetize-no-shifts
-  (is (empty? (mod2/alphabetize []))))
+  (is (= (mod2/->CircularShift []) (mod2/alphabetize (mod2/->CircularShift [])))))
 
 (deftest alphabetize-one-line-shift
-  (is (= ["one two three" "three one two" "two three one"]
-         (mod2/alphabetize ["one two three" "two three one" "three one two"]))))
+  (is (= (mod2/->CircularShift ["one two three" "three one two" "two three one"])
+         (mod2/alphabetize (mod2/->CircularShift ["one two three" "two three one" "three one two"])))))
 
 (deftest alphabetize-sample-shifts
-  (is (= (str/split-lines sample-output)
-         (mod2/alphabetize sample-shifts))))
+  (is (= (mod2/->CircularShift (str/split-lines sample-output))
+         (mod2/alphabetize (mod2/->CircularShift sample-shifts)))))
 
 (deftest output-no-lines
-  (is (empty? (with-out-str (mod2/output [])))))
+  (is (empty? (with-out-str (mod2/output (mod2/->CircularShift []))))))
 
 (deftest output-one-line
   (is (= "one two three\nthree one two\ntwo three one\n"
-         (with-out-str (mod2/output ["one two three" "three one two" "two three one"])))))
+         (with-out-str (mod2/output (mod2/->CircularShift ["one two three" "three one two" "two three one"]))))))
 
 (deftest output-sample-output
   (is (= sample-output
-         (with-out-str (mod2/output (str/split-lines sample-output))))))
+         (with-out-str (mod2/output (mod2/->CircularShift (str/split-lines sample-output)))))))
