@@ -60,34 +60,34 @@ This is the first line.
          (with-in-str sample-input (mod2/input)))))
 
 (deftest empty-input
-  (is (= (mod2/->CircularShift []) (mod2/circular-shifts (mod2/->LineStore [])))))
+  (is (= (mod2/->CircularShifts []) (mod2/circular-shifts (mod2/->LineStore [])))))
 
 (deftest one-line-circular-shifts
-  (is (= (mod2/->CircularShift ["one two three" "two three one" "three one two"])
+  (is (= (mod2/->CircularShifts ["one two three" "two three one" "three one two"])
          (mod2/circular-shifts one-line-input))))
 
 (deftest sample-circular-shifts
-  (is (= (mod2/->CircularShift sample-shifts)
+  (is (= (mod2/->CircularShifts sample-shifts)
          (mod2/circular-shifts parsed-sample-input))))
 
 (deftest alphabetize-no-shifts
-  (is (= (mod2/->CircularShift []) (mod2/alphabetize (mod2/->CircularShift [])))))
+  (is (= (mod2/->CircularShifts []) (mod2/alphabetize (mod2/->CircularShifts [])))))
 
 (deftest alphabetize-one-line-shift
-  (is (= (mod2/->CircularShift ["one two three" "three one two" "two three one"])
-         (mod2/alphabetize (mod2/->CircularShift ["one two three" "two three one" "three one two"])))))
+  (is (= (mod2/->CircularShifts ["one two three" "three one two" "two three one"])
+         (mod2/alphabetize (mod2/->CircularShifts ["one two three" "two three one" "three one two"])))))
 
 (deftest alphabetize-sample-shifts
-  (is (= (mod2/->CircularShift (str/split-lines sample-output))
-         (mod2/alphabetize (mod2/->CircularShift sample-shifts)))))
+  (is (= (mod2/->CircularShifts (str/split-lines sample-output))
+         (mod2/alphabetize (mod2/->CircularShifts sample-shifts)))))
 
 (deftest output-no-lines
-  (is (empty? (with-out-str (mod2/output (mod2/->CircularShift []))))))
+  (is (empty? (with-out-str (mod2/output (mod2/->CircularShifts []))))))
 
 (deftest output-one-line
   (is (= "one two three\nthree one two\ntwo three one\n"
-         (with-out-str (mod2/output (mod2/->CircularShift ["one two three" "three one two" "two three one"]))))))
+         (with-out-str (mod2/output (mod2/->CircularShifts ["one two three" "three one two" "two three one"]))))))
 
 (deftest output-sample-output
   (is (= sample-output
-         (with-out-str (mod2/output (mod2/->CircularShift (str/split-lines sample-output)))))))
+         (with-out-str (mod2/output (mod2/->CircularShifts (str/split-lines sample-output)))))))
